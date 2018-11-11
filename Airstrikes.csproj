@@ -39,10 +39,10 @@
       <HintPath>lib\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
     <Reference Include="Rocket.API">
-      <HintPath>lib\\Rocket.API.dll</HintPath>
+      <HintPath>lib\Rocket.API.dll</HintPath>
     </Reference>
     <Reference Include="Rocket.Core">
-      <HintPath>lib\\Rocket.Core.dll</HintPath>
+      <HintPath>lib\Rocket.Core.dll</HintPath>
     </Reference>
     <Reference Include="Rocket.Unturned">
       <HintPath>lib\Rocket.Unturned.dll</HintPath>
