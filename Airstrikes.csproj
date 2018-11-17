@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="Airstrikes.cs" />
     <Compile Include="CommandAirstrike.cs" />
+    <Compile Include="CommandBoom.cs" />
     <Compile Include="ConfigurationAirstrikes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
