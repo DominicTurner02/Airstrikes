@@ -27,6 +27,7 @@ namespace Airstrikes
 
             Logger.LogWarning("\n Loading Airstrikes, made by Mr.Kwabs...");
             Logger.LogWarning("\n General Options:");
+            Logger.LogWarning($" Max Boom Distance: {Instance.Configuration.Instance.MaxBoomDistance} meters.");
             if (Instance.Configuration.Instance.BroadcastAirstrikes)
             {
                 Logger.LogWarning(" Broadcasts Airstrikes: Enabled.");
@@ -45,8 +46,6 @@ namespace Airstrikes
                 Logger.LogError(" Log Airstrikes: Disabled.");
             }
 
-            Logger.LogWarning("\n General Options:");
-            Logger.LogWarning($" Max Boom Distance: {Instance.Configuration.Instance.MaxBoomDistance} meters.");
             Logger.LogWarning("\n General Airstrike Options:");
             Logger.LogWarning($" Max Airstrike Distance: {Instance.Configuration.Instance.MaxAirstrikeDistance} meters.");
             Logger.LogWarning($" Min Airstrike Distance: {Instance.Configuration.Instance.MinAirstrikeDistance} meters.");
