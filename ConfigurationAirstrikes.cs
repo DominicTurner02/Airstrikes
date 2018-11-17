@@ -1,9 +1,10 @@
-﻿using Rocket.API;
+using Rocket.API;
 
 namespace Airstrikes
 {
     public class ConfigurationAirstrikes : IRocketPluginConfiguration
     {
+        public float MaxBoomDistance;
         public float MaxAirstrikeDistance;
         public float MinAirstrikeDistance;
         public int StrikeCount;
@@ -18,6 +19,7 @@ namespace Airstrikes
 
         public void LoadDefaults()
         {
+            MaxBoomDistance = 250;
             MaxAirstrikeDistance = 250;
             MinAirstrikeDistance = 50;
             StrikeCount = 35;
