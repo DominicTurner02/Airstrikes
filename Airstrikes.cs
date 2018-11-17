@@ -50,7 +50,6 @@ namespace Airstrikes
             Logger.LogWarning($" Max Airstrike Distance: {Instance.Configuration.Instance.MaxAirstrikeDistance} meters.");
             Logger.LogWarning($" Min Airstrike Distance: {Instance.Configuration.Instance.MinAirstrikeDistance} meters.");
             Logger.LogWarning($" Airstrike Strike Count: {Instance.Configuration.Instance.StrikeCount}.");
-            Logger.LogWarning($" Set Airstrike Strike Count: {Instance.Configuration.Instance.SetStrikeCount}.");
             Logger.LogWarning($" Airstrike Start Delay: {Instance.Configuration.Instance.StartDelay} seconds.");
             Logger.LogWarning("\n Specific Airstrike Options:");
             Logger.LogWarning($" Strike Interval Max: {Instance.Configuration.Instance.StrikeDelayMax} seconds.");
