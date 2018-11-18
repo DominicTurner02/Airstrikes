@@ -80,11 +80,8 @@ namespace Airstrikes
                         LogSW.WriteLine($"Strike {Count}: {Location}"); 
 
                         Count++;
-                    }
-                    
+                    }   
                 }
-
-                
             }
         }
 
@@ -112,7 +109,7 @@ namespace Airstrikes
                 uPlayer.Player.quests.askSetMarker(uPlayer.CSteamID, true, Position);
             }
             yield return new WaitForSeconds(Instance.Configuration.Instance.StartDelay);
-            Instance.Vectors.Remove(Position);          
+            Instance.Vectors.Remove(Position);           
 
             DateTime beforeStrike = DateTime.Now;
             for (int i = 0; i < (Instance.Configuration.Instance.StrikeCount + 1); i++)
@@ -153,15 +150,14 @@ namespace Airstrikes
                 uPlayer.Player.quests.askSetMarker(uPlayer.CSteamID, false, Position);
                 
             }
+            yield return new WaitForSeconds(Instance.Configuration.Instance.LocationFadeTime);
             EffectManager.askEffectClearByID(Instance.Configuration.Instance.AirstrikeLocationEffectID, uCaller.CSteamID);
-
         }
 
         private static Vector3? GetGround(Vector3 Position)
         {
             int layerMasks = (RayMasks.BARRICADE | RayMasks.BARRICADE_INTERACT | RayMasks.ENEMY | RayMasks.ENTITY | RayMasks.ENVIRONMENT | RayMasks.GROUND | RayMasks.GROUND2 | RayMasks.ITEM | RayMasks.RESOURCE | RayMasks.STRUCTURE | RayMasks.STRUCTURE_INTERACT);
-
-            if (Physics.Raycast(Position, Vector3.up, out RaycastHit Hit, 200, layerMasks))
+            if (Physics.Raycast(new Vector3(Position.x, Position.y + 200, Position.z), Vector3.down, out RaycastHit Hit, 250, layerMasks))
             {
                 return Hit.point;
             } else
