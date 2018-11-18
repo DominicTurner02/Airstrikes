@@ -16,7 +16,6 @@ namespace Airstrikes
         public List<string> Aliases => new List<string>() { "AStrike" };
         public List<string> Permissions => new List<string>() { "airstrike" };
 
-
         public void Execute(IRocketPlayer caller, params string[] command)
         {
             UnturnedPlayer uCaller = (UnturnedPlayer)caller;
