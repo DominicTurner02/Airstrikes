@@ -44,21 +44,21 @@ namespace Airstrikes
             else
             {
                 Logger.LogError(" Log Airstrikes: Disabled.");
-            }
-
+            }    
             Logger.LogWarning("\n General Airstrike Options:");
             Logger.LogWarning($" Max Airstrike Distance: {Instance.Configuration.Instance.MaxAirstrikeDistance} meters.");
             Logger.LogWarning($" Min Airstrike Distance: {Instance.Configuration.Instance.MinAirstrikeDistance} meters.");
             Logger.LogWarning($" Airstrike Strike Count: {Instance.Configuration.Instance.StrikeCount}.");
             Logger.LogWarning($" Airstrike Start Delay: {Instance.Configuration.Instance.StartDelay} seconds.");
+            Logger.LogWarning($" Airstrike Location Effect: {Instance.Configuration.Instance.AirstrikeLocationEffectID}");
             Logger.LogWarning("\n Specific Airstrike Options:");
             Logger.LogWarning($" Strike Interval Max: {Instance.Configuration.Instance.StrikeDelayMax} seconds.");
             Logger.LogWarning($" Strike Interval Min: {Instance.Configuration.Instance.StrikeDelayMin} seconds.");
             Logger.LogWarning($" Strike Damange Intensity: {Instance.Configuration.Instance.DamageIntensity}.");
             Logger.LogWarning($" Strike Damange Radius: {Instance.Configuration.Instance.DamageRadius} meters.");
+            Logger.LogWarning($" Strike Explosion Effect: {Instance.Configuration.Instance.StrikeExplosionEffectID}");
             Logger.LogWarning("\n Successfully loaded Airstrikes, made by Mr.Kwabs!");
         }
-
 
         protected override void Unload()
         {
@@ -83,29 +83,36 @@ namespace Airstrikes
                     }
                     
                 }
+
                 
             }
         }
 
         public static IEnumerator SendAirstrike(UnturnedPlayer uCaller, Vector3 Position)
         {
-            Instance.Vectors.Add(Position);
             Vector3 callerPosition = new Vector3();
             List<Vector3> StrikeList = new List<Vector3>();
+            Instance.Vectors.Add(Position);
+
+            EffectManager.sendEffect(Instance.Configuration.Instance.AirstrikeLocationEffectID, EffectManager.INSANE, GetGround(Position).Value);
+
             if (Instance.Configuration.Instance.LogAirstrikes)
             {
-                callerPosition = uCaller.Position;
+                callerPosition = uCaller.Position;  
                 AirstrikeCount += 1;
             }
             if (Instance.Configuration.Instance.BroadcastAirstrikes)
             {
-                UnturnedChat.Say($"Incomming Airstrike in {Instance.Configuration.Instance.StartDelay} Seconds! Get into cover!", Color.yellow);
-                UnturnedChat.Say($"This Airstrike lasts {(int)(((Instance.Configuration.Instance.StrikeDelayMin + Instance.Configuration.Instance.StrikeDelayMax) / 2) * Instance.Configuration.Instance.StrikeCount)} Seconds!", Color.yellow);
+                UnturnedChat.Say($"Incomming Airstrike in {Instance.Configuration.Instance.StartDelay} Seconds! The Location is marked on your Map! Get into cover!", Color.yellow);
             }
             
+            foreach (SteamPlayer sPlayer in Provider.clients)
+            {
+                UnturnedPlayer uPlayer = UnturnedPlayer.FromSteamPlayer(sPlayer);
+                uPlayer.Player.quests.askSetMarker(uPlayer.CSteamID, true, Position);
+            }
             yield return new WaitForSeconds(Instance.Configuration.Instance.StartDelay);
-
-            Instance.Vectors.Remove(Position);
+            Instance.Vectors.Remove(Position);          
 
             DateTime beforeStrike = DateTime.Now;
             for (int i = 0; i < (Instance.Configuration.Instance.StrikeCount + 1); i++)
@@ -121,7 +128,7 @@ namespace Airstrikes
 
                 if (Physics.Raycast(airstrikeRay, out RaycastHit Hit))
                 {             
-                    EffectManager.sendEffect(20, EffectManager.INSANE, Hit.point);
+                    EffectManager.sendEffect(Instance.Configuration.Instance.StrikeExplosionEffectID, EffectManager.INSANE, Hit.point);
                     List<EPlayerKill> killList = new List<EPlayerKill>();
                     DamageTool.explode(Hit.point, Instance.Configuration.Instance.DamageIntensity, EDeathCause.MISSILE, uCaller.CSteamID, 200, 200, 200, 200, 200, 200, 200, 200, out killList, EExplosionDamageType.CONVENTIONAL, 32, true, false, EDamageOrigin.Unknown);
                     killList.Clear();
@@ -139,7 +146,28 @@ namespace Airstrikes
             {
                 UnturnedChat.Say("The Airstrike is over!", Color.yellow);
             }
-            
+
+            foreach (SteamPlayer sPlayer in Provider.clients)
+            {
+                UnturnedPlayer uPlayer = UnturnedPlayer.FromSteamPlayer(sPlayer);
+                uPlayer.Player.quests.askSetMarker(uPlayer.CSteamID, false, Position);
+                
+            }
+            EffectManager.askEffectClearByID(Instance.Configuration.Instance.AirstrikeLocationEffectID, uCaller.CSteamID);
+
+        }
+
+        private static Vector3? GetGround(Vector3 Position)
+        {
+            int layerMasks = (RayMasks.BARRICADE | RayMasks.BARRICADE_INTERACT | RayMasks.ENEMY | RayMasks.ENTITY | RayMasks.ENVIRONMENT | RayMasks.GROUND | RayMasks.GROUND2 | RayMasks.ITEM | RayMasks.RESOURCE | RayMasks.STRUCTURE | RayMasks.STRUCTURE_INTERACT);
+
+            if (Physics.Raycast(Position, Vector3.up, out RaycastHit Hit, 200, layerMasks))
+            {
+                return Hit.point;
+            } else
+            {
+                return null;
+            }
         }
     }
 }
