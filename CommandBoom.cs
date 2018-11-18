@@ -1,4 +1,4 @@
-﻿using Rocket.API;
+using Rocket.API;
 using Rocket.Unturned.Chat;
 using Rocket.Unturned.Player;
 using SDG.Unturned;
@@ -21,28 +21,23 @@ namespace Airstrikes
         public void Execute(IRocketPlayer caller, params string[] command)
         {
             UnturnedPlayer uCaller = (UnturnedPlayer)caller;
-            
-
+           
             if (command.Length == 0) // No user selected
             {
-
                 Vector3? eyePosition = GetEyePosition(Airstrikes.Instance.Configuration.Instance.MaxBoomDistance, uCaller);
 
                 if (!eyePosition.HasValue)
                 {
-                    UnturnedChat.Say(caller, $"There is no where to boom (Max distance: {Airstrikes.Instance.Configuration.Instance.MaxBoomDistance})!", Color.red);
+                    UnturnedChat.Say(caller, $"There is no where to boom (Max distance: {Airstrikes.Instance.Configuration.Instance.MaxBoomDistance} meters)!", Color.red);
                     return;
                 }
 
-
                 List<EPlayerKill> boomList = new List<EPlayerKill>();
-                EffectManager.sendEffect(20, EffectManager.INSANE, eyePosition.Value);
+                EffectManager.sendEffect(Airstrikes.Instance.Configuration.Instance.StrikeExplosionEffectID, EffectManager.INSANE, eyePosition.Value);
                 DamageTool.explode(eyePosition.Value, 10f, EDeathCause.KILL, uCaller.CSteamID, 200, 200, 200, 200, 200, 200, 200, 200, out boomList, EExplosionDamageType.CONVENTIONAL, 32, true, false, EDamageOrigin.Unknown);
                 boomList.Clear();
                 UnturnedChat.Say(uCaller, $"Successfully exploded position: {eyePosition.Value} ({(int)Vector3.Distance(eyePosition.Value, uCaller.Position)} meters).");
                 Logger.LogWarning($"{uCaller.DisplayName} has exploded position: {eyePosition.Value} ({(int)Vector3.Distance(eyePosition.Value, uCaller.Position)} meters).");
-
-
             }
             else // User selected
             {
@@ -61,14 +56,12 @@ namespace Airstrikes
 
                 
                 List<EPlayerKill> boomList = new List<EPlayerKill>();
-                EffectManager.sendEffect(20, EffectManager.INSANE, victimPosition);
+                EffectManager.sendEffect(Airstrikes.Instance.Configuration.Instance.StrikeExplosionEffectID, EffectManager.INSANE, victimPosition);
                 DamageTool.explode(victimPosition, 10f, EDeathCause.KILL, uCaller.CSteamID, 100, 100, 100, 100, 100, 100, 100, 100, out boomList, EExplosionDamageType.CONVENTIONAL, 32, true, false, EDamageOrigin.Unknown);
                 boomList.Clear();
 
                 UnturnedChat.Say(uCaller, $"Successfully exploded {uVictim.DisplayName}");
                 Logger.LogWarning($"{uCaller.DisplayName} has exploded {uVictim.DisplayName} ({(int)Vector3.Distance(uCaller.Position, uVictim.Position)} meters from caller)!");
-
-
 
             }
 
@@ -86,6 +79,5 @@ namespace Airstrikes
 
             return Raycast.point;
         }
-
     }
 }
