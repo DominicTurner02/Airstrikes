@@ -34,7 +34,7 @@ namespace Airstrikes
             DamageIntensity = 15;
             DamageRadius = 20;
             AirstrikeLocationEffectID = 120;
-            AirstrikeLocationEffectID = 45;
+            StrikeExplosionEffectID = 45;
             LocationFadeTime = 5f;
             LogAirstrikes = false;
             BroadcastAirstrikes = true;
