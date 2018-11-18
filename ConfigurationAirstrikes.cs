@@ -8,6 +8,7 @@ namespace Airstrikes
         public float MaxAirstrikeDistance;
         public float MinAirstrikeDistance;
         public int StrikeCount;
+        public int SetStrikeCount;
         public float StartDelay;
         public float StrikeDelayMin;
         public float StrikeDelayMax;
@@ -15,6 +16,7 @@ namespace Airstrikes
         public float DamageRadius;
         public ushort AirstrikeLocationEffectID;
         public ushort StrikeExplosionEffectID;
+        public float LocationFadeTime;
         public bool LogAirstrikes;
         public bool BroadcastAirstrikes;
         
@@ -25,13 +27,15 @@ namespace Airstrikes
             MaxAirstrikeDistance = 250;
             MinAirstrikeDistance = 50;
             StrikeCount = 35;
+            SetStrikeCount = 10;
             StartDelay = 5;
             StrikeDelayMin = 0.25f;
             StrikeDelayMax = 0.75f;
             DamageIntensity = 15;
             DamageRadius = 20;
             AirstrikeLocationEffectID = 120;
-            StrikeExplosionEffectID = 45;
+            AirstrikeLocationEffectID = 45;
+            LocationFadeTime = 5f;
             LogAirstrikes = false;
             BroadcastAirstrikes = true;
         }
