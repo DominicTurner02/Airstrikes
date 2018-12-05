@@ -112,7 +112,7 @@ namespace Airstrikes
             Instance.Vectors.Remove(Position);           
 
             DateTime beforeStrike = DateTime.Now;
-            for (int i = 0; i < (Instance.Configuration.Instance.StrikeCount + 1); i++)
+            for (int i = 0; i < Instance.Configuration.Instance.StrikeCount; i++)
             {
                 yield return new WaitForSeconds(UnityEngine.Random.Range(Instance.Configuration.Instance.StrikeDelayMin, Instance.Configuration.Instance.StrikeDelayMax));
 
@@ -135,7 +135,7 @@ namespace Airstrikes
 
             if (Instance.Configuration.Instance.LogAirstrikes)
             {
-                LogAirstrike($"[{DateTime.Now.ToString("yyy/MM/dd h:mm:ss tt")}]\n\nUser:\n{uCaller.DisplayName} [{uCaller.Id}].\n\nAirstrike Start Delay:\n{Instance.Configuration.Instance.StartDelay} seconds.\n\nStrikes:\n{Instance.Configuration.Instance.StrikeCount + 1}.\n\nAverage Strike Time:\n{(Instance.Configuration.Instance.StrikeDelayMin + Instance.Configuration.Instance.StrikeDelayMax) / 2} seconds.\n\nCaller Position:\n{callerPosition}.\n\nAirstrike Location:\n{Position}.\n\nDistance from Caller:\n{(int)Vector3.Distance(callerPosition, Position)}M.\n\nDamage Intensity:\n{Instance.Configuration.Instance.DamageIntensity}.\n\nStrike Radius:\n{Instance.Configuration.Instance.DamageRadius}M.\n\nAirstrikes this Uptime: {AirstrikeCount}.\n\nThis Airstrike lasted {Math.Round((afterStrike - beforeStrike).TotalSeconds, 2)} Seconds.", StrikeList);
+                LogAirstrike($"[{DateTime.Now.ToString("yyy/MM/dd h:mm:ss tt")}]\n\nUser:\n{uCaller.DisplayName} [{uCaller.Id}].\n\nAirstrike Start Delay:\n{Instance.Configuration.Instance.StartDelay} seconds.\n\nStrikes:\n{Instance.Configuration.Instance.StrikeCount}.\n\nAverage Strike Time:\n{(Instance.Configuration.Instance.StrikeDelayMin + Instance.Configuration.Instance.StrikeDelayMax) / 2} seconds.\n\nCaller Position:\n{callerPosition}.\n\nAirstrike Location:\n{Position}.\n\nDistance from Caller:\n{(int)Vector3.Distance(callerPosition, Position)}M.\n\nDamage Intensity:\n{Instance.Configuration.Instance.DamageIntensity}.\n\nStrike Radius:\n{Instance.Configuration.Instance.DamageRadius}M.\n\nAirstrikes this Uptime: {AirstrikeCount}.\n\nThis Airstrike lasted {Math.Round((afterStrike - beforeStrike).TotalSeconds, 2)} Seconds.", StrikeList);
                 StrikeList.Clear();
             }
             
