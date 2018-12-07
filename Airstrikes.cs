@@ -116,19 +116,19 @@ namespace Airstrikes
             {
                 yield return new WaitForSeconds(UnityEngine.Random.Range(Instance.Configuration.Instance.StrikeDelayMin, Instance.Configuration.Instance.StrikeDelayMax));
 
-                Vector3 airstrikeLocation = new Vector3(UnityEngine.Random.Range(Position.x - Instance.Configuration.Instance.DamageIntensity, Position.x + Instance.Configuration.Instance.DamageRadius), Position.y + 100, UnityEngine.Random.Range(Position.z - Instance.Configuration.Instance.DamageRadius, Position.z + Instance.Configuration.Instance.DamageRadius));
+                Vector3 airstrikeLocation = new Vector3(UnityEngine.Random.Range(Position.x - Instance.Configuration.Instance.DamageIntensity, Position.x + Instance.Configuration.Instance.DamageRadius), Position.y + 300, UnityEngine.Random.Range(Position.z - Instance.Configuration.Instance.DamageRadius, Position.z + Instance.Configuration.Instance.DamageRadius));
                 Ray airstrikeRay = new Ray(airstrikeLocation, Vector3.down);
-                if (Instance.Configuration.Instance.LogAirstrikes)
-                {
-                    StrikeList.Add(airstrikeLocation);
-                }
 
                 if (Physics.Raycast(airstrikeRay, out RaycastHit Hit))
-                {             
+                {
                     EffectManager.sendEffect(Instance.Configuration.Instance.StrikeExplosionEffectID, EffectManager.INSANE, Hit.point);
                     List<EPlayerKill> killList = new List<EPlayerKill>();
                     DamageTool.explode(Hit.point, Instance.Configuration.Instance.DamageIntensity, EDeathCause.MISSILE, uCaller.CSteamID, 200, 200, 200, 200, 200, 200, 200, 200, out killList, EExplosionDamageType.CONVENTIONAL, 32, true, false, EDamageOrigin.Unknown);
                     killList.Clear();
+                    if (Instance.Configuration.Instance.LogAirstrikes)
+                    {
+                        StrikeList.Add(Hit.point);
+                    }
                 }
             }
             DateTime afterStrike = DateTime.Now;
@@ -157,7 +157,7 @@ namespace Airstrikes
         private static Vector3? GetGround(Vector3 Position)
         {
             int layerMasks = (RayMasks.BARRICADE | RayMasks.BARRICADE_INTERACT | RayMasks.ENEMY | RayMasks.ENTITY | RayMasks.ENVIRONMENT | RayMasks.GROUND | RayMasks.GROUND2 | RayMasks.ITEM | RayMasks.RESOURCE | RayMasks.STRUCTURE | RayMasks.STRUCTURE_INTERACT);
-            if (Physics.Raycast(new Vector3(Position.x, Position.y + 200, Position.z), Vector3.down, out RaycastHit Hit, 250, layerMasks))
+            if (Physics.Raycast(new Vector3(Position.x, Position.y + 400, Position.z), Vector3.down, out RaycastHit Hit, 500, layerMasks))
             {
                 return Hit.point;
             } else
