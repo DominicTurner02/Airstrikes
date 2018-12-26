@@ -54,6 +54,11 @@ namespace Airstrikes
                     return;
                 }
 
+                if (!uCaller.HasPermission("boom.other")) {
+                    UnturnedChat.Say(uCaller, "You do not have permission to boom other Users!", Color.red);
+                    return;       
+                }
+
                 
                 List<EPlayerKill> boomList = new List<EPlayerKill>();
                 EffectManager.sendEffect(Airstrikes.Instance.Configuration.Instance.StrikeExplosionEffectID, EffectManager.INSANE, victimPosition);
