@@ -57,6 +57,15 @@ namespace Airstrikes
             Logger.LogWarning($" Strike Damange Intensity: {Instance.Configuration.Instance.DamageIntensity}.");
             Logger.LogWarning($" Strike Damange Radius: {Instance.Configuration.Instance.DamageRadius} meters.");
             Logger.LogWarning($" Strike Explosion Effect: {Instance.Configuration.Instance.StrikeExplosionEffectID}");
+            if (Instance.Configuration.Instance.AutoAirstrikes)
+            {
+                Logger.LogWarning(" Automatic Airstrikes: Enabled.");
+                Instance.StartCoroutine(AutomaticStrike());
+            }
+            else
+            {
+                Logger.LogError(" Automatic Airstrikes: Disabled.");
+            }
             Logger.LogWarning("\n Successfully loaded Airstrikes, made by Mr.Kwabs!");
         }
 
@@ -165,5 +174,69 @@ namespace Airstrikes
                 return null;
             }
         }
+        
+        private Vector3 StringToVector(string Vector)
+        {
+            if (Vector.StartsWith("(") && Vector.EndsWith(")"))
+            {
+                Vector = Vector.Substring(1, Vector.Length - 2);
+            }
+            string[] VectorArray = Vector.Split(',');
+            Vector3 Result = new Vector3(
+                float.Parse(VectorArray[0]),
+                float.Parse(VectorArray[1]),
+                float.Parse(VectorArray[2])
+                );
+            return Result;
+        }
+        
+        private static IEnumerator AutomaticStrike()
+        {
+            while (Instance.Configuration.Instance.AutoAirstrikes)
+            {
+                foreach (ConfigurationAirstrikes.AutoAirstrike Airstrike in Instance.Configuration.Instance.AutomaticAirstrikes)
+                {
+                    Vector3 AirstrikePosition = Instance.StringToVector(Airstrike.Position);
+                    string AirstrikeName = Airstrike.Name;
+                    int AirstrikeDelay = Instance.Configuration.Instance.AutoAirstrikeIntervalMinutes - 1;
+                    int Amount = Instance.Configuration.Instance.AutoAirstrikeIntervalMinutes + 1;
+
+                    for (int i = 0; i < AirstrikeDelay; i++)
+                    {
+                        Amount--;
+
+                        UnturnedChat.Say($"Airstrike at {AirstrikeName} in {Amount} minutes!", Color.yellow);
+                        yield return new WaitForSeconds(60f);
+                    }
+
+                    UnturnedChat.Say($"Airstrike at {AirstrikeName} in 1 minute!", Color.yellow);
+
+                    yield return new WaitForSeconds(60f);
+
+                    UnturnedChat.Say($"Airstrike at {AirstrikeName} starting now!", Color.yellow);
+
+                    yield return new WaitForSeconds(3f);
+
+                    for (int i = 0; i < (Airstrike.StrikeCount); i++)
+                    {
+                        yield return new WaitForSeconds(Airstrike.StrikeSpeed);
+
+                        Vector3 airstrikeLocation = new Vector3(UnityEngine.Random.Range(AirstrikePosition.x - Airstrike.DamageRadius, AirstrikePosition.x + Airstrike.DamageRadius), AirstrikePosition.y + 400, UnityEngine.Random.Range(AirstrikePosition.z - Airstrike.DamageRadius, AirstrikePosition.z + Airstrike.DamageRadius));
+                        Ray airstrikeRay = new Ray(airstrikeLocation, Vector3.down);
+
+                        if (Physics.Raycast(airstrikeRay, out RaycastHit Hit))
+                        {
+                            EffectManager.sendEffect(Instance.Configuration.Instance.StrikeExplosionEffectID, EffectManager.INSANE, Hit.point);
+                            List<EPlayerKill> killList = new List<EPlayerKill>();
+                            DamageTool.explode(Hit.point, Airstrike.DamageRadius, EDeathCause.MISSILE, new Steamworks.CSteamID(0), 200, 200, 200, 200, 200, 200, 200, 200, out killList, EExplosionDamageType.CONVENTIONAL, 32, true, false, EDamageOrigin.Unknown);
+                            EffectManager.sendEffect(137, EffectManager.INSANE, Hit.point);
+                            EffectManager.sendEffect(119, EffectManager.INSANE, Hit.point);
+                            killList.Clear();
+                        }
+                    }
+                    UnturnedChat.Say($"The Airstrike at {AirstrikeName} is over.", Color.yellow);
+                }
+            }
+        }        
     }
 }
