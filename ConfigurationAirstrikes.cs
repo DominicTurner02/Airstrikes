@@ -42,11 +42,16 @@ namespace Airstrikes
 
             [XmlAttribute]
             public int StrikeCount;
+            [XmlAttribute]
             public float StrikeSpeed;
+            [XmlAttribute]
             public float DamageIntensity;
+            [XmlAttribute]
             public float DamageRadius;
+            [XmlAttribute]
             public string Name;
-            public string Position;           
+            [XmlAttribute]
+            public string Position;               
         }
 
 
