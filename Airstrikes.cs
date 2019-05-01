@@ -163,7 +163,7 @@ namespace Airstrikes
             EffectManager.askEffectClearByID(Instance.Configuration.Instance.AirstrikeLocationEffectID, uCaller.CSteamID);
         }
 
-        private static Vector3? GetGround(Vector3 Position)
+        public static Vector3? GetGround(Vector3 Position)
         {
             int layerMasks = (RayMasks.BARRICADE | RayMasks.BARRICADE_INTERACT | RayMasks.ENEMY | RayMasks.ENTITY | RayMasks.ENVIRONMENT | RayMasks.GROUND | RayMasks.GROUND2 | RayMasks.ITEM | RayMasks.RESOURCE | RayMasks.STRUCTURE | RayMasks.STRUCTURE_INTERACT);
             if (Physics.Raycast(new Vector3(Position.x, Position.y + 400, Position.z), Vector3.down, out RaycastHit Hit, 500, layerMasks))
@@ -228,7 +228,7 @@ namespace Airstrikes
                         {
                             EffectManager.sendEffect(Instance.Configuration.Instance.StrikeExplosionEffectID, EffectManager.INSANE, Hit.point);
                             List<EPlayerKill> killList = new List<EPlayerKill>();
-                            DamageTool.explode(Hit.point, Instance.Configuration.Instance.DamageIntensity, EDeathCause.MISSILE, uCaller.CSteamID, 200, 200, 200, 200, 200, 200, 200, 200, out killList, EExplosionDamageType.CONVENTIONAL, 32, true, false, EDamageOrigin.Rocket_Explosion, ERagdollEffect.NONE);
+                            DamageTool.explode(Hit.point, Instance.Configuration.Instance.DamageIntensity, EDeathCause.MISSILE, new Steamworks.CSteamID(0), 200, 200, 200, 200, 200, 200, 200, 200, out killList, EExplosionDamageType.CONVENTIONAL, 32, true, false, EDamageOrigin.Rocket_Explosion, ERagdollEffect.NONE);
                             EffectManager.sendEffect(137, EffectManager.INSANE, Hit.point);
                             EffectManager.sendEffect(119, EffectManager.INSANE, Hit.point);
                             killList.Clear();
