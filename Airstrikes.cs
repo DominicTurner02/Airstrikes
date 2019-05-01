@@ -132,7 +132,7 @@ namespace Airstrikes
                 {
                     EffectManager.sendEffect(Instance.Configuration.Instance.StrikeExplosionEffectID, EffectManager.INSANE, Hit.point);
                     List<EPlayerKill> killList = new List<EPlayerKill>();
-                    DamageTool.explode(Hit.point, Instance.Configuration.Instance.DamageIntensity, EDeathCause.MISSILE, uCaller.CSteamID, 200, 200, 200, 200, 200, 200, 200, 200, out killList, EExplosionDamageType.CONVENTIONAL, 32, true, false, EDamageOrigin.Unknown);
+                    DamageTool.explode(Hit.point, Instance.Configuration.Instance.DamageIntensity, EDeathCause.MISSILE, uCaller.CSteamID, 200, 200, 200, 200, 200, 200, 200, 200, out killList, EExplosionDamageType.CONVENTIONAL, 32, true, false, EDamageOrigin.Rocket_Explosion, ERagdollEffect.NONE);
                     killList.Clear();
                     if (Instance.Configuration.Instance.LogAirstrikes)
                     {
@@ -228,7 +228,7 @@ namespace Airstrikes
                         {
                             EffectManager.sendEffect(Instance.Configuration.Instance.StrikeExplosionEffectID, EffectManager.INSANE, Hit.point);
                             List<EPlayerKill> killList = new List<EPlayerKill>();
-                            DamageTool.explode(Hit.point, Airstrike.DamageRadius, EDeathCause.MISSILE, new Steamworks.CSteamID(0), 200, 200, 200, 200, 200, 200, 200, 200, out killList, EExplosionDamageType.CONVENTIONAL, 32, true, false, EDamageOrigin.Unknown);
+                            DamageTool.explode(Hit.point, Instance.Configuration.Instance.DamageIntensity, EDeathCause.MISSILE, uCaller.CSteamID, 200, 200, 200, 200, 200, 200, 200, 200, out killList, EExplosionDamageType.CONVENTIONAL, 32, true, false, EDamageOrigin.Rocket_Explosion, ERagdollEffect.NONE);
                             EffectManager.sendEffect(137, EffectManager.INSANE, Hit.point);
                             EffectManager.sendEffect(119, EffectManager.INSANE, Hit.point);
                             killList.Clear();
