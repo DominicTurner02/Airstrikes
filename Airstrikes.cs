@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using Math = System.Math;
 using Logger = Rocket.Core.Logging.Logger;
 
 namespace Airstrikes
@@ -131,8 +132,7 @@ namespace Airstrikes
                 if (Physics.Raycast(airstrikeRay, out RaycastHit Hit))
                 {
                     EffectManager.sendEffect(Instance.Configuration.Instance.StrikeExplosionEffectID, EffectManager.INSANE, Hit.point);
-                    List<EPlayerKill> killList = new List<EPlayerKill>();
-                    DamageTool.explode(Hit.point, Instance.Configuration.Instance.DamageIntensity, EDeathCause.MISSILE, uCaller.CSteamID, 200, 200, 200, 200, 200, 200, 200, 200, out killList, EExplosionDamageType.CONVENTIONAL, 32, true, false, EDamageOrigin.Rocket_Explosion, ERagdollEffect.NONE);
+                    DamageTool.explode(Hit.point, Instance.Configuration.Instance.DamageIntensity, EDeathCause.MISSILE, uCaller.CSteamID, 200, 200, 200, 200, 200, 200, 200, 200, out List<EPlayerKill> killList, EExplosionDamageType.CONVENTIONAL, 32, true, false, EDamageOrigin.Rocket_Explosion, ERagdollEffect.NONE);
                     killList.Clear();
                     if (Instance.Configuration.Instance.LogAirstrikes)
                     {
