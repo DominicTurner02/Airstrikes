@@ -32,9 +32,8 @@ namespace Airstrikes
                     return;
                 }
 
-                List<EPlayerKill> boomList = new List<EPlayerKill>();
                 EffectManager.sendEffect(Airstrikes.Instance.Configuration.Instance.StrikeExplosionEffectID, EffectManager.INSANE, eyePosition.Value);
-                DamageTool.explode(eyePosition.Value, 10f, EDeathCause.KILL, uCaller.CSteamID, 200, 200, 200, 200, 200, 200, 200, 200, out boomList, EExplosionDamageType.CONVENTIONAL, 32, true, false, EDamageOrigin.Unknown);
+                DamageTool.explode(eyePosition.Value, 10f, EDeathCause.KILL, uCaller.CSteamID, 200, 200, 200, 200, 200, 200, 200, 200, out List<EPlayerKill> boomList, EExplosionDamageType.CONVENTIONAL, 32, true, false, EDamageOrigin.Unknown);
                 boomList.Clear();
                 UnturnedChat.Say(uCaller, $"Successfully exploded position: {eyePosition.Value} ({(int)Vector3.Distance(eyePosition.Value, uCaller.Position)} meters).");
                 Logger.LogWarning($"{uCaller.DisplayName} has exploded position: {eyePosition.Value} ({(int)Vector3.Distance(eyePosition.Value, uCaller.Position)} meters).");
@@ -59,10 +58,8 @@ namespace Airstrikes
                     return;       
                 }
 
-                
-                List<EPlayerKill> boomList = new List<EPlayerKill>();
                 EffectManager.sendEffect(Airstrikes.Instance.Configuration.Instance.StrikeExplosionEffectID, EffectManager.INSANE, victimPosition);
-                DamageTool.explode(victimPosition, 10f, EDeathCause.KILL, uCaller.CSteamID, 100, 100, 100, 100, 100, 100, 100, 100, out boomList, EExplosionDamageType.CONVENTIONAL, 32, true, false, EDamageOrigin.Unknown);
+                DamageTool.explode(victimPosition, 10f, EDeathCause.KILL, uCaller.CSteamID, 100, 100, 100, 100, 100, 100, 100, 100, out List<EPlayerKill> boomList, EExplosionDamageType.CONVENTIONAL, 32, true, false, EDamageOrigin.Unknown);
                 boomList.Clear();
 
                 UnturnedChat.Say(uCaller, $"Successfully exploded {uVictim.DisplayName}");
